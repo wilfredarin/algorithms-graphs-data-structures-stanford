@@ -1,0 +1,46 @@
+from collections import defaultdict
+f = open("dijkstraData.txt")
+size = 201
+g = defaultdict(list)
+cost = [[[] for i in range(201)]for i in range(201)]
+
+for i in range(200):
+    l = (f.readline().split())
+    ver = int(l.pop(0))
+    for i in l:
+        g[ver].append(int(i.split(',')[0]))
+        g[int(i.split(',')[0])].append(ver)
+        cost[int(i.split(',')[0])][ver] = int(i.split(',')[1])
+        cost[ver][int(i.split(',')[0])] = int(i.split(',')[1])
+    
+        
+    
+
+dist = [float("inf")]*size
+prev = [-1]*size
+
+Q = []*size
+for i in g:
+	Q.append(i)
+dist[1] = 0
+
+while Q:
+	min_ = dist[Q[0]]
+	u = Q[0]
+	for i in Q:
+		if dist[i]<min_:
+			min_ = dist[i]
+			u = i
+	Q.remove(u)
+    
+
+	for i in g[u]:
+		alt = dist[u] + cost[u][i]
+		if alt < dist[i]:
+			dist[i] = alt
+			prev[i] = u
+
+
+l =[7,37,59,82,99,115,133,165,188,197]
+for i in l:
+    print(dist[i])
